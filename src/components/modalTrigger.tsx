@@ -50,14 +50,21 @@ const ModalTrigger = ({ label, trigger, children }: ModalTriggerProps) => {
       onClick: openModal,
     })
   ) : (
-    <TriggerDefaultComponent className="PopoverToggle" onClick={openModal}>
+    <TriggerDefaultComponent
+      className="PopoverToggle"
+      onClick={openModal}
+      // {...props}
+    >
       {label}
     </TriggerDefaultComponent>
   )
 
-  const childrenComponent = React.cloneElement(children, {
-    closeComponent: <ModalClose closeModal={closeModal} />,
-  })
+  const childrenComponent = React.cloneElement(
+    children as React.ReactElement<any>,
+    {
+      closeComponent: <ModalClose closeModal={closeModal} />,
+    }
+  )
 
   const customStyles = {
     overlay: {

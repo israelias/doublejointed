@@ -3,7 +3,7 @@ import { mq, fontSize, fontWeight, spacing, color } from "../theme"
 import ButtonGroup from "./buttonGroup"
 
 interface ButtonProps extends DefaultTheme {
-  className?: string
+  className: string
   size?: string
   variant?: string
 }
@@ -45,11 +45,18 @@ const Button = styled.button.attrs(
     size = "medium",
     variant = "default",
     ...props
-  }: ButtonProps) => {
+  }: {
+    size: string
+    variant: string
+    className: string
+  }) => {
     return {
-      className: `Button${className ? ` ${className}` : ""}`,
-      size: size || "medium",
-      variant: variant || "default",
+      className: ({ className }: ButtonProps) => `Button${className}` || "",
+      size: ({ size }: ButtonProps) => size || "medium",
+      variant: ({ variant }: ButtonProps) => variant || "default",
+      // className: `Button${className ? ` ${className}` : ""}`,
+      // size: size || "medium",
+      // variant: variant || "default",
     }
   }
 )`
