@@ -30,6 +30,8 @@ export interface BlockComponentProps {
   values?: object
   // different
   children?: React.ReactNode
+  units?: number
+  setUnits?: React.Dispatch<React.SetStateAction<number>>
 }
 
 const Block = ({

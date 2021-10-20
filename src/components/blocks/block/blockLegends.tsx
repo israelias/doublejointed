@@ -1,11 +1,13 @@
 import React from "react"
-import PropTypes from "prop-types"
 import styled, { css } from "styled-components"
-import { mq, spacing, fontSize, color } from "core/theme"
-import BlockLegendsItem from "./BlockLegendsItem"
-import { useBucketKeys } from "../../helpers/useBucketKeys"
+import { mq, spacing, fontSize, color } from "../../../theme"
+import BlockLegendsItem from "./blockLegendsItem"
+import { useBucketKeys } from "../../../helpers/useBucketKeys"
+
+import type { Block } from "../types"
 
 interface BlockLegendsProps {
+  block: Block
   layout: "horizontal" | "vertical"
   withFrame: boolean
   chipSize: number
@@ -15,6 +17,12 @@ interface BlockLegendsProps {
   onMouseEnter: () => void
   onMouseLeave: () => void
   onClick: () => void
+  //extra properti
+  data?: {}
+  units?: number
+  position?: "top" | "bottom"
+  useShortLabels?: boolean
+  current: string | null
 }
 
 const BlockLegends = ({
@@ -74,15 +82,29 @@ const BlockLegends = ({
   )
 }
 
-const Container = styled.table`
+const Container = styled.table.attrs(
+  ({
+    position,
+    layout,
+    withFrame,
+  }: {
+    position: "bottom" | "top"
+    layout: "horizontal" | "vertical"
+    withFrame: boolean
+  }) => ({
+    position,
+    layout,
+    withFrame,
+  })
+)`
   font-size: ${fontSize("small")};
   /* margin-top: ${spacing()}; */
   margin-top: ${({ position }) => (position === "bottom" ? spacing() : 0)};
   margin-bottom: ${({ position }) => (position === "top" ? spacing() : 0)};
   width: 100%;
 
-  ${props => {
-    if (props.withFrame) {
+  ${withFrame => {
+    if (withFrame) {
       return css`
         border: 1px solid ${color("border")};
         padding: ${spacing(0.5)};
@@ -95,7 +117,9 @@ const Container = styled.table`
   }}
 `
 
-const ContainerInner = styled.tbody`
+const ContainerInner = styled.tbody.attrs(
+  (props: { layout: "horizontal" | "vertical" }) => props
+)`
   ${props => {
     if (props.layout === "horizontal") {
       return css`

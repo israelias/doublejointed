@@ -1,115 +1,122 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import styled, { css } from "styled-components"
+import React from "react"
+import styled, { css, DefaultTheme } from "styled-components"
 import { spacing } from "../../../theme"
 
-export default class LegendsItem extends Component {
-  static propTypes = {
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    label: PropTypes.string.isRequired,
-    shortLabel: PropTypes.string,
-    color: PropTypes.string,
-    style: PropTypes.object.isRequired,
-    chipSize: PropTypes.number.isRequired,
-    chipStyle: PropTypes.object.isRequired,
-    onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-    onClick: PropTypes.func,
-    isCurrent: PropTypes.bool,
-  }
+interface BlockLegendsItemProps {
+  id: string | number
+  label: string
+  shortLabel?: string
+  color?: string
+  style: object
+  chipSize: number
+  chipStyle: object
+  onMouseEnter?: React.MouseEventHandler<HTMLTableRowElement>
+  onMouseLeave?: React.MouseEventHandler<HTMLTableRowElement>
+  onClick?: React.MouseEventHandler<HTMLTableRowElement>
+  current: string | null
+  data?: object
+  units?: "percentage" | "count"
+  layout?: "horizontal" | "vertical"
+  useShortLabels?: boolean
+}
 
-  static defaultProps = {
-    style: {},
-    chipStyle: {},
-  }
-
-  handleMouseEnter = () => {
-    const { onMouseEnter, id, label, color } = this.props
+const LegendsItem = ({
+  id,
+  label,
+  shortLabel,
+  color,
+  style = {},
+  chipSize,
+  chipStyle = {},
+  onMouseEnter,
+  onMouseLeave,
+  onClick,
+  current,
+  data,
+  units,
+  layout,
+  useShortLabels,
+}: BlockLegendsItemProps) => {
+  const handleMouseEnter = () => {
     if (onMouseEnter === undefined) return
     onMouseEnter({ id, label, color })
   }
 
-  handleMouseLeave = () => {
-    const { onMouseLeave, id, label, color } = this.props
+  const handleMouseLeave = () => {
     if (onMouseLeave === undefined) return
     onMouseLeave({ id, label, color })
   }
 
-  handleClick = () => {
-    const { onClick, id, label, color } = this.props
+  const handleClick = () => {
     if (onClick === undefined) return
     onClick({ id, label, color })
   }
 
-  render() {
-    const {
-      id,
-      color,
-      label,
-      shortLabel,
-      chipSize,
-      style,
-      chipStyle,
-      data,
-      units,
-      onMouseEnter,
-      useShortLabels,
-      layout,
-      current = null,
-    } = this.props
+  const isInteractive = typeof onMouseEnter !== "undefined"
 
-    const isInteractive = typeof onMouseEnter !== "undefined"
+  const state =
+    current === null ? "default" : current === id ? "active" : "inactive"
 
-    const state =
-      current === null ? "default" : current === id ? "active" : "inactive"
-
-    return (
-      <Container
-        className={`Legends__Item ${
-          shortLabel ? "Legends__Item--withKeyLabel" : ""
-        }`}
-        style={style}
-        isInteractive={isInteractive}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseLeave={this.handleMouseLeave}
-        onClick={this.handleClick}
-        state={state}
-      >
-        {color && (
-          <ChipWrapper layout={layout}>
-            <Chip
-              style={{
-                width: chipSize,
-                height: chipSize,
-                background: color,
-                ...chipStyle,
-              }}
-            />
-          </ChipWrapper>
-        )}
-        {!color && shortLabel && (
-          <KeyLabel layout={layout} className="Legends__Item__KeyLabel">
-            {shortLabel}{" "}
-          </KeyLabel>
-        )}
-        <Label
-          layout={layout}
-          className="Legends__Item__Label"
-          dangerouslySetInnerHTML={{
-            __html: useShortLabels ? shortLabel || label : label,
-          }}
-        />
-        {data && (
-          <Value layout={layout} className="Legends__Item__Value">
-            {units === "percentage" ? `${data[units]}%` : data[units]}
-          </Value>
-        )}
-      </Container>
-    )
-  }
+  return (
+    <Container
+      className={`Legends__Item ${
+        shortLabel ? "Legends__Item--withKeyLabel" : ""
+      }`}
+      style={style}
+      isInteractive={isInteractive}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
+      state={state}
+    >
+      {color && (
+        <ChipWrapper layout={layout}>
+          <Chip
+            style={{
+              width: chipSize,
+              height: chipSize,
+              background: color,
+              ...chipStyle,
+            }}
+          />
+        </ChipWrapper>
+      )}
+      {!color && shortLabel && (
+        <KeyLabel layout={layout} className="Legends__Item__KeyLabel">
+          {shortLabel}{" "}
+        </KeyLabel>
+      )}
+      <Label
+        layout={layout}
+        className="Legends__Item__Label"
+        dangerouslySetInnerHTML={{
+          __html: useShortLabels ? shortLabel || label : label,
+        }}
+      />
+      {data && (
+        <Value layout={layout} className="Legends__Item__Value">
+          {units === "percentage" ? `${data[units]}%` : data[units]}
+        </Value>
+      )}
+    </Container>
+  )
 }
 
-const Container = styled.tr`
+const Container = styled.tr.attrs(
+  ({
+    isInteractive = false,
+    state = "default",
+    theme,
+  }: {
+    isInteractive: boolean
+    state: "default" | "active" | "inactive"
+    theme: DefaultTheme
+  }) => ({
+    isInteractive,
+    state,
+    theme,
+  })
+)`
   cursor: default;
 
   &:last-child {
@@ -140,21 +147,43 @@ const Container = styled.tr`
   }}
 `
 
-const ChipWrapper = styled.th`
+const ChipWrapper = styled.th.attrs(
+  ({ layout }: { layout: "horizontal" | "vertical" }) => ({
+    layout,
+  })
+)`
   padding: ${spacing(0.25)} ${spacing(0.5)} ${spacing(0.25)} 0;
 `
-const Chip = styled.div``
+const Chip = styled.div.attrs(
+  ({ layout }: { layout: "horizontal" | "vertical" }) => ({
+    layout,
+  })
+)``
 
-const KeyLabel = styled.th`
+const KeyLabel = styled.th.attrs(
+  ({ layout }: { layout: "horizontal" | "vertical" }) => ({
+    layout,
+  })
+)`
   padding: ${spacing(0.25)} ${spacing(0.5)} ${spacing(0.25)} 0;
   text-align: left;
 `
 
-const Label = styled.td`
+const Label = styled.td.attrs(
+  ({ layout }: { layout: "horizontal" | "vertical" }) => ({
+    layout,
+  })
+)`
   padding: ${spacing(0.25)} ${spacing(0.5)} ${spacing(0.25)} 0;
   width: 100%;
 `
 
-const Value = styled.td`
+const Value = styled.td.attrs(
+  ({ layout }: { layout: "horizontal" | "vertical" }) => ({
+    layout,
+  })
+)`
   padding: ${spacing(0.25)} ${spacing(0.5)} ${spacing(0.25)} 0;
 `
+
+export default LegendsItem
