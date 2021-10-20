@@ -1,8 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import Link from "../localeLink"
-import ShareSite from "../../share/shareSite"
-// import { useI18n } from "core/i18n/i18nContext"
+import ShareSite from "../share/shareSite"
 import { mq, color, screenReadersOnlyMixin } from "../../theme"
 import colors from "../../theme/colors"
 import { Nav } from "./nav"
@@ -31,8 +30,6 @@ const CloseIcon = () => (
 )
 
 export const Sidebar = ({ showSidebar, closeSidebar, rest }) => {
-  const { translate } = useI18n()
-
   return (
     <SidebarContainer id="sidebar" show={showSidebar} className="Sidebar">
       <SidebarCloseButton
@@ -41,16 +38,14 @@ export const Sidebar = ({ showSidebar, closeSidebar, rest }) => {
         aria-expanded={showSidebar}
       >
         <CloseIcon />
-        <ScreenReadersHint>{translate("general.close_nav")}</ScreenReadersHint>
+        <ScreenReadersHint>{"general.close_nav"}</ScreenReadersHint>
       </SidebarCloseButton>
 
       <SidebarScreenReadersTitle>{siteTitle}</SidebarScreenReadersTitle>
       <SidebarHeader>
         <SidebarLogoLink to="/">
           <SidebarLogo />
-          <ScreenReadersHint>
-            {translate("general.back_to_intro")}
-          </ScreenReadersHint>
+          <ScreenReadersHint>{"general.back_to_intro"}</ScreenReadersHint>
         </SidebarLogoLink>
       </SidebarHeader>
       <Nav {...rest} closeSidebar={closeSidebar} />

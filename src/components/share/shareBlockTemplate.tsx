@@ -5,26 +5,20 @@ import { mergePageContext } from "../../helpers/page.helpers"
 import PageMeta from "../pages/pageMeta"
 import PageMetaDebug from "../pages/pageMetaDebug"
 import config from "../../config/config.yml"
-import { useI18n } from "core/i18n/i18nContext"
 import { usePageContext } from "../../context/page.context"
 
 const ShareBlockTemplate = () => {
   const pageContext = usePageContext()
   const { block } = pageContext
   const location = useLocation()
-  const { translate } = useI18n()
-  const context = mergePageContext(pageContext, location)
+  const context = mergePageContext(pageContext, location, {})
+  const translate = () => {}
 
-  const blockTitle = getBlockTitle(block, context, translate, {
-    format: "full",
-  })
+  const blockTitle = getBlockTitle(block, context, translate)
   const blockDescription = getBlockDescription(
     context.block,
     context,
-    translate,
-    {
-      isMarkdownEnabled: false,
-    }
+    translate
   )
   const overrides = {
     title: `${config.siteTitle}: ${blockTitle} ${config.hashtag}`,

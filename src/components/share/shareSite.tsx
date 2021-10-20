@@ -4,19 +4,16 @@ import ShareTwitter from "./shareTwitter"
 import ShareEmail from "./shareEmail"
 import ShareFacebook from "./shareFacebook"
 import ShareLinkedIn from "./shareLinkedIn"
-import { useI18n } from "core/i18n/i18nContext"
 import config from "../../config/config.yml"
 
 const { hashtag, year, siteTitle, siteUrl } = config
 
 const ShareSite = () => {
-  const { translate } = useI18n()
-
   const options = { values: { hashtag, year, siteTitle, link: siteUrl } }
-  const title = translate("share.site.title", options)
-  const twitterText = translate("share.site.twitter_text", options)
-  const subject = translate("share.site.subject", options)
-  const body = translate("share.site.body", options)
+  const title = "Discover the StateOf JavaScript 2019 results"
+  const twitterText = `Discover the State Of JavaScript 2019 results ${options.values.link} #StateOfJS`
+  const subject = "State Of JavaScript Survey Results"
+  const body = `Here are some interesting JavaScript survey results: ${options.values.link}`
 
   return (
     <Container className="ShareSite">

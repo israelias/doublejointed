@@ -1,11 +1,14 @@
 import React from "react"
-import { useI18n } from "core/i18n/i18nContext"
 import track from "./tracking"
 import ShareLink from "./shareLink"
 
-const ShareImage = ({ trackingId, url }) => {
-  const { translate } = useI18n()
-
+const ShareImage = ({
+  trackingId,
+  url,
+}: {
+  trackingId?: string
+  url: string
+}) => {
   return (
     <ShareLink
       onClick={track("Image", trackingId)}
@@ -13,7 +16,7 @@ const ShareImage = ({ trackingId, url }) => {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={translate("share.image")}
+      aria-label={"Get Image"}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

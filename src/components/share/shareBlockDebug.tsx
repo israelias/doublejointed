@@ -1,23 +1,20 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { usePageContext } from 'core/helpers/pageContext'
-import { useI18n } from 'core/i18n/i18nContext'
-import { getBlockMeta } from 'core/helpers/blockHelpers'
-import Debug from '../components/Debug'
+import React from "react"
+import { usePageContext } from "../../context/page.context"
+import { getBlockMeta } from "../../helpers/block.helpers"
+import Debug from "../debug"
 
-const ShareBlockDebug = ({ block }) => {
-    const context = usePageContext()
-    const { translate } = useI18n()
+import { Block } from "../blocks/types"
 
-    if (!context.isDebugEnabled) return null
+const ShareBlockDebug = ({ block }: { block: Block }) => {
+  const context = usePageContext()
+  const translate = () => "shareblockdebug"
+  const title = "Block sharing"
 
-    const meta = getBlockMeta(block, context, translate)
+  if (!context.isDebugEnabled) return null
 
-    return <Debug title="Block sharing" data={meta} />
-}
+  const meta = getBlockMeta(block, context, translate, title)
 
-ShareBlockDebug.propTypes = {
-    block: PropTypes.object.isRequired,
+  return <Debug title={title} data={meta} />
 }
 
 export default ShareBlockDebug
