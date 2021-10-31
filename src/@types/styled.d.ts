@@ -1,12 +1,12 @@
 import 'styled-components'
-// import {
-//     ToolExperienceId,
-//     ToolsSectionId,
-//     FeatureExperienceId,
-//     SimplifiedFeatureExperienceId,
-//     FeaturesSectionId,
-//     GenderId,
-// } from 'core/bucket_keys'
+import {
+    ToolExperienceId,
+    ToolsSectionId,
+    FeatureExperienceId,
+    SimplifiedFeatureExperienceId,
+    FeaturesSectionId,
+    GenderId,
+} from '../bucket_keys'
 
 declare module 'styled-components' {
     export interface DefaultTheme {
@@ -62,21 +62,21 @@ declare module 'styled-components' {
                 primary: string
                 secondary: string
             }
-            // ranges: {
-            //     tools: Record<ToolExperienceId, string>
-            //     toolSections: Record<ToolsSectionId, string>
-            //     features: Record<FeatureExperienceId, string>
-            //     featureSections: Record<FeaturesSectionId, string>
-            //     features_simplified: Record<SimplifiedFeatureExperienceId, string>
-            //     gender: Record<GenderId, string>
-            //     opinions: {
-            //         4: string
-            //         3: string
-            //         2: string
-            //         1: string
-            //         0: string
-            //     }
-            // }
+            ranges: {
+                tools: Record<ToolExperienceId>
+                toolSections: Record<ToolsSectionId, string>
+                features: Record<FeatureExperienceId, string>
+                featureSections: Record<FeaturesSectionId>
+                features_simplified: Record<SimplifiedFeatureExperienceId, string>
+                gender: Record<GenderId, string>
+                opinions: {
+                    4: string
+                    3: string
+                    2: string
+                    1: string
+                    0: string
+                }
+            }
             distinct: string[]
             velocity: string[]
             countries: string[]
