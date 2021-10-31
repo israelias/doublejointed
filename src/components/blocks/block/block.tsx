@@ -1,37 +1,27 @@
 import React, { memo } from "react"
 import styled from "styled-components"
 import { mq, spacing } from "../../../theme"
-import BlockTitleOriginal from "./blockTitle"
+import BlockTitleOriginal, { BlockTitleProps } from "./blockTitle"
 import BlockNote from "./blockNote"
 import ShareBlockDebug from "../../share/shareBlockDebug"
-import BlockLegends from "./blockLegends"
-
-import type { Block as BlockType } from "../types"
-
-const Container = styled.div`
-  @media ${mq.small} {
-    margin-bottom: ${spacing(2)};
-  }
-
-  @media ${mq.mediumLarge} {
-    margin-bottom: ${spacing(4)};
-  }
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-`
+import BlockLegends, { BlockLegendsProps } from "./blockLegends"
 
 export interface BlockComponentProps {
-  block: BlockType
-  showDescription: boolean
-  isShareable: boolean
+  block: BlockProps
+  showDescription?: boolean
+  isShareable?: boolean
   className?: string
   values?: object
   // different
   children?: React.ReactNode
-  units?: number
-  setUnits?: React.Dispatch<React.SetStateAction<number>>
+  units?: "percentage" | "count"
+  setUnits?: React.Dispatch<React.SetStateAction<"percentage" | "count">>
+  legendProps?: BlockLegendsProps
+  error?: {}
+  data?: any
+  titleProps?: BlockTitleProps
+  blockFooter?: any
+  title?: string
 }
 
 const Block = ({
@@ -78,7 +68,7 @@ const Block = ({
       {isShareable && <ShareBlockDebug block={block} />}
       {showLegend && legendPosition === "top" && (
         <BlockLegends
-          block={block}
+          // block={block}
           data={data}
           units={units}
           position={legendPosition}
@@ -90,7 +80,7 @@ const Block = ({
       </div>
       {showLegend && legendPosition === "bottom" && (
         <BlockLegends
-          block={block}
+          // block={block}
           data={data}
           units={units}
           position={legendPosition}
@@ -102,5 +92,19 @@ const Block = ({
     </Container>
   )
 }
+
+const Container = styled.div`
+  @media ${mq.small} {
+    margin-bottom: ${spacing(2)};
+  }
+
+  @media ${mq.mediumLarge} {
+    margin-bottom: ${spacing(4)};
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`
 
 export default memo(Block)

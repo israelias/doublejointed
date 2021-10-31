@@ -4,10 +4,8 @@ import { mq, spacing, fontSize, color } from "../../../theme"
 import BlockLegendsItem from "./blockLegendsItem"
 import { useBucketKeys } from "../../../helpers/useBucketKeys"
 
-import type { Block } from "../types"
-
-interface BlockLegendsProps {
-  block: Block
+export interface BlockLegendsProps {
+  block: BlockProps
   layout: "horizontal" | "vertical"
   withFrame: boolean
   chipSize: number
@@ -19,7 +17,7 @@ interface BlockLegendsProps {
   onClick: () => void
   //extra properti
   data?: {}
-  units?: number
+  units?: "percentage" | "count"
   position?: "top" | "bottom"
   useShortLabels?: boolean
   current: string | null

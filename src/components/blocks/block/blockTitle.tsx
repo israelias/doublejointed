@@ -4,7 +4,7 @@ import last from "lodash/last"
 import { mq, spacing, color, screenReadersOnlyMixin } from "../../../theme"
 import ShareBlock from "../../share/shareBlock"
 import BlockExport from "./blockExport"
-import { useI18n } from "core/i18n/i18nContext"
+// import { useI18n } from "core/i18n/i18nContext"
 import { usePageContext } from "../../../context/page.context"
 import {
   getBlockMeta,
@@ -15,11 +15,10 @@ import {
 import SharePermalink from "../../share/sharePermalink"
 import BlockUnitsSelector from "./blockUnitsSelector"
 import BlockCompletionIndicator from "./blockCompletionIndicator"
-import T from "core/i18n/T"
+// import T from "core/i18n/T"
 import Button from "../../button"
 import Popover from "../../popover"
 
-import type { Block } from "./blockSwitcher"
 import { PageContextType } from "../../../context/page.context"
 
 const MoreIcon = () => (
@@ -49,11 +48,9 @@ const MoreIcon = () => (
 )
 
 const More = (props: { className: string }) => {
-  const { translate } = useI18n()
-
   return (
     <MoreButton {...props}>
-      <ScreenReadersHint>{translate("general.more_actions")}</ScreenReadersHint>
+      <ScreenReadersHint>{"More Actions"}</ScreenReadersHint>
       <MoreIcon />
     </MoreButton>
   )
@@ -77,18 +74,8 @@ const MoreButton = styled(Button)`
   }
 `
 
-// interface BlockType {
-//   block: {
-//     id: string
-//     title?: React.ReactNode
-//     titleId?: string
-//     description?: React.ReactNode
-//     descriptionId?: string
-//   }
-// }
-
-interface BlockTitleContentsProps {
-  block: Block
+export interface BlockTitleContentsProps {
+  block: BlockProps
   context: PageContextType
 }
 
@@ -97,7 +84,7 @@ const BlockTitleContents = ({ block, context }: BlockTitleContentsProps) => {
   if (title) {
     return titleLink ? <a href={titleLink}>{title}</a> : title
   } else {
-    return <T k={getBlockTitleKey(block, context)} />
+    return getBlockTitleKey(block, context)
   }
 }
 
@@ -105,28 +92,27 @@ const BlockDescriptionContents = ({
   block,
   context,
 }: BlockTitleContentsProps) => {
-  const { translate } = useI18n()
   const { description, enableDescriptionMarkdown = true } = block
   const key = `${getBlockDescriptionKey(block, context)}`
-  if (description || translate(key, {}, null)) {
+  if (description) {
     return (
-      <Description className="Block__Description">
-        <T
-          t={description}
-          k={key}
-          md={enableDescriptionMarkdown}
-          fallback={null}
-        />
-      </Description>
+      <Description className="Block__Description">{description}</Description>
     )
   }
   return null
 }
 
-interface BlockTitleProps {
-  block: Block
+export interface BlockTitleProps {
+  block: BlockProps
   showDescription: boolean
   isShareable: boolean
+  isExportable?: boolean
+  units?: "percentage" | "count"
+  setUnits?: React.Dispatch<React.SetStateAction<"percentage" | "count">>
+  switcher?: boolean
+  closeComponent?: React.ReactComponent
+  data?: any
+  values?: any
 }
 
 const BlockTitle = ({
@@ -148,7 +134,7 @@ const BlockTitle = ({
       : data.completion)
   const [showOptions, setShowOptions] = useState(false)
   const context = usePageContext()
-  const { translate } = useI18n()
+  const translate = () => {}
 
   const blockTitle = getBlockTitle(block, context, translate)
   const blockMeta = getBlockMeta(block, context, translate)

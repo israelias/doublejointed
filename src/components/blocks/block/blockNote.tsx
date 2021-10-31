@@ -1,50 +1,26 @@
 import React, { memo } from "react"
-import PropTypes from "prop-types"
 import styled from "styled-components"
 import { spacing } from "../../../theme"
-import { useI18n } from "core/i18n/i18nContext"
-import T from "core/i18n/T"
+// import { useI18n } from "core/i18n/i18nContext"
+// import T from "core/i18n/T"
 
-interface BlockNoteProps {
-  block: {
-    id: string
-    title?: React.ReactNode
-    titleId?: string
-    description?: React.ReactNode
-    descriptionId?: string
-  }
-}
-
-const BlockNote = ({ block }: BlockNoteProps) => {
-  const { translate } = useI18n()
+const BlockNote = ({ block }: { block: BlockProps }) => {
+  // const { translate } = useI18n()
   // for "_others" blocks (freeform answers), replace suffix with ".others"
   const blockId = block.id && block.id.replace("_others", ".others")
   const key = `blocks.${block.blockName || blockId}.note`
-  const blockNote = translate(key, {}, null)
+  // const blockNote = translate(key, {}, null)
+  const blockNote = key || null
   if (blockNote) {
     return (
       <Note className="Block__Note">
-        <T k={key} md={true} />
+        {/* <T k={key} md={true} /> */}
+        Fucking block note
       </Note>
     )
   } else {
     return null
   }
-}
-
-BlockNote.propTypes = {
-  block: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.node,
-    titleId: PropTypes.string,
-    description: PropTypes.node,
-    descriptionId: PropTypes.string,
-  }).isRequired,
-}
-
-BlockNote.defaultProps = {
-  showDescription: true,
-  isShareable: true,
 }
 
 const Note = styled.div`
