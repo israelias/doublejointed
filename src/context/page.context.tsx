@@ -18,6 +18,9 @@ export type PageContextType = {
   isDebugEnabled: boolean
   isCapturing?: boolean
   redirect: string
+  locale?: {
+    id: string
+  }
 }
 
 const pageContext = createContext<PageContextType>(undefined!)
