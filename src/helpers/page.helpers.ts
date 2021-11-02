@@ -1,7 +1,8 @@
-import { getToolName } from './tool.helpers'
+
 import get from 'lodash/get'
-import config from '../config/config.yml'
-import { getBlockImage } from './block.helpers'
+import { PageProps } from 'gatsby'
+// import config from '../config/config.yml'
+import { getBlockImage, SITETITLE, CAPTURESURL, SITEURL, SOCIALMEDIAIMAGE } from './block.helpers'
 
 // export const getTranslationValuesFromContext = (context, translate) => {
 //     const values = {}
@@ -15,23 +16,17 @@ import { getBlockImage } from './block.helpers'
 //     return values
 // }
 
-export interface PageProps
-{
-  id: string
-  path: string
-  titleId: string;
 
-}
 
-export const getPageLabelKey = (page: PageProps) => page.titleId || `sections.${page.id}.title`
+export const getPageLabelKey = (page: Page) => page.titleId || `sections.${page.id}.title`
 
-export const getPageLabel = (page: PageProps, { includeWebsite = false } = {}) => {
-    let label
+export const getPageLabel = (page: Page, { includeWebsite = false } = {}) => {
+    let label: string
 
-    // label = translate(getPageLabelKey(page))
+    label = getPageLabelKey(page)
 
     if (includeWebsite === true) {
-        label = `${config.siteTitle}: ${label}`
+        label = `${SITETITLE}: ${label}`
     }
 
     return label
@@ -41,37 +36,40 @@ export const getPageLabel = (page: PageProps, { includeWebsite = false } = {}) =
  * example:
  *   http://2018.stateofjs.com/images/captures/en-US/front-end_overview.png
  */
-export const getPageImageUrl = (context) => {
-    const baseUrl = `${context.host}/images/`
+export const getPageImageUrl = (page: Page) => {
+    const baseUrl = `${page.host}/images/`
 
     let imageUrl
-    if (context.block !== undefined) {
-        imageUrl = getBlockImage(context.block, context)
+    if (page.block !== undefined) {
+        const { block } = page;
+        imageUrl = getBlockImage({ block, page })
     } else {
-        imageUrl = `${baseUrl}${config.socialMediaImage}`
+        imageUrl = `${baseUrl}${SOCIALMEDIAIMAGE}`
     }
 
     return imageUrl
 }
 
-export const getPageMeta = (context, description, overrides = {}) => {
-    const url = `${context.host}${get(context, 'locale.path')}${context.basePath}`
-    const imageUrl = getPageImageUrl(context)
-    const isRoot = context.path === '/' || context.basePath === '/'
+export const getPageMeta = (page: Page, description: string, overrides = {}) => {
+    const url = `${page.host}${get(page, 'locale.path')}${page.basePath}`
+    const imageUrl = getPageImageUrl(page)
+    const isRoot = page.path === '/' || page.basePath === '/'
+ 
 
     const meta = {
         url,
         title: isRoot
-            ? config.siteTitle
-            : getPageLabel(context, description, { includeWebsite: true }),
+            ? SITETITLE
+            : getPageLabel(page, { includeWebsite: true }),
         imageUrl,
+        description,
         ...overrides,
     }
 
     return meta
 }
 
-export const getPageSocialMeta = (context, description, overrides = {}) => {
+export const getPageSocialMeta = (context: Page, description: string, overrides = {}) => {
     const meta = getPageMeta(context, description, overrides)
     const socialMeta = [
         // facebook
@@ -93,13 +91,13 @@ export const getPageSocialMeta = (context, description, overrides = {}) => {
 /**
  * Merge context generated from `gatsby-node` with runtime context.
  */
-export const mergePageContext = (pageContext, location, state) => {
+export const mergePageContext = (pageContext: Page, location: Window['location'], state: PageProps<Window['location']> ) => {
     const isCapturing =
         location && location.search ? location.search.indexOf('capture') !== -1 : false
     const isDebugEnabled =
         location && location.search ? location.search.indexOf('debug') !== -1 : false
 
-    let host = config.siteUrl
+    let host = SITEURL
     if (location && location.host && location.protocol) {
         host = `${location.protocol}//${location.host}`
     }
