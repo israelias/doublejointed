@@ -23,6 +23,7 @@ const ShareBlockTemplate = () => {
   const overrides = {
     title: `${config.siteTitle}: ${blockTitle} ${config.hashtag}`,
   }
+    
   if (blockDescription) {
     overrides.description = blockDescription
   }

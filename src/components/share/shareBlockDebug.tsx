@@ -3,9 +3,7 @@ import { usePageContext } from "../../context/page.context"
 import { getBlockMeta } from "../../helpers/block.helpers"
 import Debug from "../debug"
 
-import { Block } from "../blocks/types"
-
-const ShareBlockDebug = ({ block }: { block: Block }) => {
+const ShareBlockDebug = ({ block }: { block: BlockProps }) => {
   const context = usePageContext()
   const translate = () => "shareblockdebug"
   const title = "Block sharing"

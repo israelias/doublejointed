@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import PropTypes from "prop-types"
 import styled from "styled-components"
 import classNames from "classnames"
 import ReactGA from "react-ga"
@@ -12,8 +11,6 @@ import ShareLinkedIn from "./shareLinkedIn"
 import ShareFacebook from "./shareFacebook"
 import ShareEmail from "./shareEmail"
 import ShareImage from "./shareImage"
-
-import type { Block } from "../blocks/types"
 
 const ShareIcon = () => (
   <Icon
@@ -45,17 +42,17 @@ const ShareBlock = ({
   toggleClass,
   title,
 }: {
-  block: Block
-  section: string
+  block: BlockProps
+  section?: string
   className: string
-  toggleClass: () => void
+  toggleClass?: () => void
   title: string
 }) => {
   const [showOptions, setShowOptions] = useState<boolean>(false)
   const context = usePageContext()
 
   const toggleOptions = (
-    e: React.ChangeEvent<React.HTMLElement<HTMLButtonElement>>
+    e: React.ChangeEvent<React.ReactHTMLElement<HTMLButtonElement>>
   ) => {
     e.preventDefault()
 
@@ -82,9 +79,7 @@ const ShareBlock = ({
         <ShareButton
           className="ShareButton"
           size="small"
-          onClick={e => {
-            toggleOptions(e)
-          }}
+          onClick={toggleOptions}
           aria-haspopup="menu"
           aria-expanded={showOptions}
         >

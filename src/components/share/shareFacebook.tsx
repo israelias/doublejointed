@@ -1,5 +1,5 @@
 import React from "react"
-import PropTypes from "prop-types"
+
 import track from "./tracking"
 import ShareLink from "./shareLink"
 
@@ -37,11 +37,6 @@ const ShareFacebook = ({
       <span className="sr-only">{"Share on Facebook"}</span>
     </ShareLink>
   )
-}
-
-ShareFacebook.propTypes = {
-  link: PropTypes.string.isRequired,
-  trackingId: PropTypes.string,
 }
 
 export default ShareFacebook
