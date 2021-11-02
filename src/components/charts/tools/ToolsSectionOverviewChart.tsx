@@ -64,7 +64,7 @@ const ToolsSectionOverviewChart = ({
     return color
   }
 
-  const formatTick = id => {
+  const formatTick = (id: string) => {
     const tool = data.find(t => t.id === id)
     return get(tool, "entity.name", id)
   }

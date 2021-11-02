@@ -1,5 +1,4 @@
 import React, { memo } from "react"
-import PropTypes from "prop-types"
 import { useTheme } from "@nivo/core"
 import { useEntities } from "../../../context/entities.context"
 
@@ -39,17 +38,6 @@ const BarTooltip = ({
       &nbsp;({data.count})
     </div>
   )
-}
-
-BarTooltip.propTypes = {
-  indexValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-    .isRequired,
-  data: PropTypes.shape({
-    percentage: PropTypes.number.isRequired,
-    count: PropTypes.number.isRequired,
-  }).isRequired,
-  i18nNamespace: PropTypes.string.isRequired,
-  shouldTranslate: PropTypes.bool.isRequired,
 }
 
 export default memo(BarTooltip)
