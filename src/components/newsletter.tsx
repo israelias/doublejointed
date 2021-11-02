@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import ReactGA from "react-ga"
 import styled from "styled-components"
-import Trans from "core/i18n/Trans"
+
 import config from "../config/config.yml"
 import { mq, spacing } from "../theme"
 import Button from "./button"

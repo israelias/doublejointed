@@ -6,8 +6,6 @@ import { usePageContext } from "../../context/page.context"
 import Link from "../localeLink"
 import Button from "../button"
 import PageLabel from "./pageLabel"
-import config from "../../config/config.yml"
-import T from "core/i18n/T"
 
 const PageFooter = () => {
   const context = usePageContext()
@@ -21,10 +19,7 @@ const PageFooter = () => {
             className="PageFooter__Link PageFooter__Link--previous"
             to={context.previous.path}
           >
-            «{" "}
-            <LinkLabel>
-              <T k="page.previous" />
-            </LinkLabel>{" "}
+            «<LinkLabel>Previous</LinkLabel>
             <PageLabel page={context.previous} />
           </PreviousLink>
         )}
@@ -34,41 +29,27 @@ const PageFooter = () => {
             className="PageFooter__Link PageFooter__Link--next Button"
             to={context.next.path}
           >
-            <LinkLabel>
-              <T k="page.next" />
-            </LinkLabel>{" "}
+            <LinkLabel>Next</LinkLabel>
             <PageLabel page={context.next} /> »
           </NextLink>
         )}
       </Nav>
       <Notes>
-        <T
-          k="general.charts_nivo"
-          values={{ link: "https://nivo.rocks/" }}
-          html={true}
-        />{" "}
-        <T
-          k="general.netlify_link"
-          values={{ link: "https://www.netlify.com" }}
-          html={true}
+        <span
+          dangerouslySetInnerHTML={{
+            __html: `<a href="http://stateofjs.com/">State of Javascript</a>`,
+          }}
         />
-        <br />
-        <T
-          k="general.leave_issue"
-          values={{ link: config.issuesUrl }}
-          html={true}
-        />{" "}
-        <T
-          k="general.join_discord"
-          values={{ link: config.discordUrl }}
-          html={true}
+        <span
+          dangerouslySetInnerHTML={{
+            __html: `Questions? Found a bug? <a href="http://stateofjs.com/">Leave an issue</a>.`,
+          }}
         />
-        {context.locale.id !== "en-US" && (
-          <>
-            <br />
-            <T k="general.translator_mode" />{" "}
-          </>
-        )}
+        <span
+          dangerouslySetInnerHTML={{
+            __html: `This site is powered by <a href="http://www.stateofjs.com">Netlify</a>`,
+          }}
+        />
       </Notes>
     </Container>
   )
