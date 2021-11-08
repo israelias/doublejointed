@@ -303,4 +303,5 @@ export const keys = {
     css_for_email: generateEnvironmentRatingKeys('css_for_email'),
 }
 
-export type BucketKeyNameType = keyof typeof Object.keys(keys)
+export type BucketKeysNameType = keyof typeof Object.keys(keys);
+export type BucketKeysConfigType = typeof Object.keys(keys);
