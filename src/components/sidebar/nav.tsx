@@ -1,15 +1,19 @@
 import React from "react"
 import styled, { css } from "styled-components"
-// import sitemap from "../../config/sitemap.yml"
+import sitemap from "../../../config/sitemap.yml"
 import { mq, fancyLinkMixin, spacing } from "../../theme"
 import { usePageContext } from "../../context/page.context"
 import PageLink from "../pages/pageLink"
 
 import { getPageLabelKey } from "../../helpers/page.helpers"
 
-const filteredNav = sitemap.contents.filter(page => !page.is_hidden)
+const filteredNav = sitemap.contents.filter((page: Page) => !page.is_hidden)
 
-const StyledPageLink = styled(PageLink)`
+const StyledPageLink = styled(PageLink).attrs(
+  (props: { depth: number; isHidden: boolean }) => {
+    return props
+  }
+)`
   display: flex;
   white-space: nowrap;
   margin: 0 0 ${spacing(0.33)} 0;
@@ -67,16 +71,24 @@ const StyledPageLink = styled(PageLink)`
     })}
 `
 
+interface NavItemProps {
+  page: Page
+  currentPath: string
+  closeSidebar: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
+  isHidden: boolean
+  depth: number
+}
+
 const NavItem = ({
   page,
   currentPath,
   closeSidebar,
   isHidden = false,
   depth = 0,
-}) => {
+}: NavItemProps) => {
   const isActive = currentPath.indexOf(page.path) !== -1
   const hasChildren = page.children && page.children.length > 0
-  const displayChildren = hasChildren > 0 && isActive
+  const displayChildren = hasChildren && isActive
 
   return (
     <>
@@ -87,11 +99,11 @@ const NavItem = ({
         depth={depth}
         isHidden={isHidden}
       >
-        <T k={getPageLabelKey(page)} />
+        {getPageLabelKey(page)}
       </StyledPageLink>
       {hasChildren && (
         <>
-          {page.children.map(childPage => (
+          {page?.children?.map(childPage => (
             <NavItem
               key={childPage.id}
               page={childPage}
