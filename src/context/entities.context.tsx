@@ -89,14 +89,16 @@ const EntitiesContextProviderInner = (
   )
 }
 
-export const EntitiesContextProvider = (
-  props: ProviderProps<EntitiesContextType>
-) => {
+export const EntitiesContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode
+}) => {
   return (
     <StaticQuery query={entitiesQuery}>
       {({ entities: { entities } }) => (
         <EntitiesContextProviderInner value={entities}>
-          {props.children}
+          {children}
         </EntitiesContextProviderInner>
       )}
     </StaticQuery>
